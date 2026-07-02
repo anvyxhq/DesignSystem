@@ -11,7 +11,7 @@ A SwiftUI design system: theme tokens and reusable components to keep apps visua
 - **`Theme`** — centralized color palette, spacing, and corner-radius tokens. Rebrand in one line.
 - **`AppTypography`** — Dynamic-Type-aware font tokens with a custom-font family and runtime `FontRegistrar`.
 - **Button styles** — `.primary` and `.secondary`.
-- **Components** — `Card`, `LoadingOverlay`, `Toast`, `AsyncButton`, `EmptyStateView` (built on `ContentUnavailableView`), `Badge`, and a `.shimmering()` skeleton modifier.
+- **Components** — `Card`, `LoadingOverlay`, `Toast`, `AsyncButton`, `EmptyStateView` (built on `ContentUnavailableView`), `Badge`, `Chip`, `PagedView`, `.cardStyle()`, and a `.shimmering()` skeleton modifier.
 - **`Color(hex:)`** — hex string initializer (RGB / RGBA).
 
 > Built for iOS 26+ to use the latest SwiftUI APIs.
