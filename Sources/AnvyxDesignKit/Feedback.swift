@@ -53,10 +53,7 @@ struct ToastQueueModifier: ViewModifier {
         content.overlay(alignment: .top) {
             if let toast = queue.current {
                 ToastBanner(toast: toast)
-                    .onReceive(Timer.publish(every: duration, on: .main, in: .common).autoconnect()) { _ in
-                        queue.dismissCurrent()
-                    }
-                    .id(toast.id) // restart the auto-dismiss timer for each queued toast
+                    .anvyxTimer(after: duration, id: toast.id) { queue.dismissCurrent() }
             }
         }
         .animation(.spring(duration: 0.3), value: queue.current)

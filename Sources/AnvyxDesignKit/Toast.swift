@@ -68,10 +68,7 @@ public struct ToastModifier: ViewModifier {
         content.overlay(alignment: .top) {
             if let toast {
                 ToastBanner(toast: toast)
-                    .onReceive(Timer.publish(every: duration, on: .main, in: .common).autoconnect()) { _ in
-                        self.toast = nil
-                    }
-                    .id(toast.id) // restart the auto-dismiss timer for each new toast
+                    .anvyxTimer(after: duration, id: toast.id) { self.toast = nil }
             }
         }
         .animation(.spring(duration: 0.3), value: toast)

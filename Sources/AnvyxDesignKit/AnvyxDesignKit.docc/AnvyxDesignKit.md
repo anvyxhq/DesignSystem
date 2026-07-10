@@ -67,3 +67,6 @@ Brand colors that need explicit light/dark (or increased-contrast) variants use
 - ``PrimaryButtonStyle``
 - ``SecondaryButtonStyle``
 - ``AsyncButton``
+
+### Utilities
+- ``SwiftUI/View/anvyxTimer(after:id:perform:)``
