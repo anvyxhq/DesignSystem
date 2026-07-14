@@ -11,6 +11,7 @@ import SwiftUI
 
 // Compile-level coverage of the iOS 26 Liquid Glass wrappers (runs only on iOS 26+).
 @available(iOS 26, *)
+@MainActor
 final class LiquidGlassTests: XCTestCase {
     func testGlassWrappersCompose() {
         _ = Text("x").anvyxGlass()
