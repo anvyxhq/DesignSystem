@@ -21,6 +21,8 @@ public struct ColorPalette: Sendable {
     public var success: Color
     public var warning: Color
     public var danger: Color
+    /// Hairlines between rows and sections.
+    public var separator: Color
 
     public init(
         accent: Color = .accentColor,
@@ -30,7 +32,8 @@ public struct ColorPalette: Sendable {
         textSecondary: Color = .secondary,
         success: Color = .green,
         warning: Color = .orange,
-        danger: Color = .red
+        danger: Color = .red,
+        separator: Color = Color(.separator)
     ) {
         self.accent = accent
         self.background = background
@@ -40,23 +43,42 @@ public struct ColorPalette: Sendable {
         self.success = success
         self.warning = warning
         self.danger = danger
+        self.separator = separator
     }
 }
 
 public struct Spacing: Sendable {
-    public var xs: CGFloat = 4
-    public var sm: CGFloat = 8
-    public var md: CGFloat = 16
-    public var lg: CGFloat = 24
-    public var xl: CGFloat = 32
-    public init() {}
+    public var xs: CGFloat
+    public var sm: CGFloat
+    public var md: CGFloat
+    public var lg: CGFloat
+    public var xl: CGFloat
+
+    public init(xs: CGFloat = 4, sm: CGFloat = 8, md: CGFloat = 16, lg: CGFloat = 24, xl: CGFloat = 32) {
+        self.xs = xs
+        self.sm = sm
+        self.md = md
+        self.lg = lg
+        self.xl = xl
+    }
 }
 
 public struct Radius: Sendable {
-    public var sm: CGFloat = 8
-    public var md: CGFloat = 12
-    public var lg: CGFloat = 20
-    public init() {}
+    /// Thumbnails and small inline artwork.
+    public var sm: CGFloat
+    /// Icon badges and compact controls.
+    public var md: CGFloat
+    /// Cards, sheets and list surfaces.
+    public var lg: CGFloat
+    /// Hero tiles and full-width banners.
+    public var xl: CGFloat
+
+    public init(sm: CGFloat = 8, md: CGFloat = 12, lg: CGFloat = 20, xl: CGFloat = 24) {
+        self.sm = sm
+        self.md = md
+        self.lg = lg
+        self.xl = xl
+    }
 }
 
 public extension Color {

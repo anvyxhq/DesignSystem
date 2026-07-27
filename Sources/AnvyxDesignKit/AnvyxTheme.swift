@@ -11,12 +11,17 @@ import UIKit
 // MARK: - Token groups
 
 /// Dynamic-Type-aware typography tokens. Set `family` to switch the whole app to
-/// a custom font; otherwise the system font is used.
+/// a custom font; otherwise the system font is used, cut in `design` (e.g.
+/// `.rounded` for a softer brand voice).
 public struct ThemeTypography: Sendable {
     public var family: FontFamily?
+    /// Which system font design the tokens are cut from. Ignored when `family` is
+    /// set, since a custom family carries its own shapes.
+    public var design: Font.Design
 
-    public init(family: FontFamily? = nil) {
+    public init(family: FontFamily? = nil, design: Font.Design = .default) {
         self.family = family
+        self.design = design
     }
 
     /// A Dynamic-Type-aware font for the given text style + weight.
@@ -24,11 +29,13 @@ public struct ThemeTypography: Sendable {
         if let family {
             return .custom(family.postScriptName(for: weight), size: size, relativeTo: style)
         }
-        return .system(style, design: .default).weight(weight)
+        return .system(style, design: design).weight(weight)
     }
 
     public var largeTitle: Font { font(.largeTitle, weight: .bold, size: 34) }
     public var title: Font      { font(.title, weight: .bold, size: 28) }
+    public var title2: Font     { font(.title2, weight: .bold, size: 22) }
+    public var title3: Font     { font(.title3, weight: .bold, size: 20) }
     public var headline: Font   { font(.headline, weight: .semibold, size: 17) }
     public var body: Font       { font(.body, weight: .regular, size: 17) }
     public var callout: Font    { font(.callout, weight: .medium, size: 16) }
