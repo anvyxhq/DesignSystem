@@ -23,6 +23,13 @@ public struct ColorPalette: Sendable {
     public var danger: Color
     /// Hairlines between rows and sections.
     public var separator: Color
+    /// Labels and icons drawn on top of an `accent`, `success`, `warning` or
+    /// `danger` fill (filled buttons, selected chips, toasts, badges).
+    public var onAccent: Color
+    /// Optional per-component overrides. Unset tokens inherit from the semantic
+    /// colors above; read them through the resolved accessors such as
+    /// ``buttonBackground`` or ``cardBackground``.
+    public var components: ComponentColors
 
     public init(
         accent: Color = .accentColor,
@@ -33,7 +40,9 @@ public struct ColorPalette: Sendable {
         success: Color = .green,
         warning: Color = .orange,
         danger: Color = .red,
-        separator: Color = Color(.separator)
+        separator: Color = Color(.separator),
+        onAccent: Color = .white,
+        components: ComponentColors = ComponentColors()
     ) {
         self.accent = accent
         self.background = background
@@ -44,6 +53,8 @@ public struct ColorPalette: Sendable {
         self.warning = warning
         self.danger = danger
         self.separator = separator
+        self.onAccent = onAccent
+        self.components = components
     }
 }
 
@@ -82,26 +93,58 @@ public struct Radius: Sendable {
 }
 
 public extension Color {
+    /// Create a color from a hex string, or `nil` when the string is not a valid
+    /// hex color.
+    ///
+    /// Accepted forms, each with or without a leading `#` (case-insensitive):
+    /// - `RGB` — shorthand, each digit doubled (`"F80"` is `"FF8800"`), opaque.
+    /// - `RRGGBB` — opaque.
+    /// - `RRGGBBAA` — alpha is the **last** byte (RGBA order, as in CSS).
+    ///
+    /// Any other length, any non-hex character, or surrounding whitespace makes
+    /// the initializer fail. Components are interpreted in sRGB.
+    init?(validatingHex hex: String) {
+        guard let c = Self.hexComponents(hex) else { return nil }
+        self.init(.sRGB, red: c.red, green: c.green, blue: c.blue, opacity: c.alpha)
+    }
+
     /// Create a color from a hex string such as `"#FF8800"` or `"FF8800"`.
+    ///
+    /// Accepts the same forms as ``init(validatingHex:)``; an eight-digit value
+    /// is read as `RRGGBBAA` (alpha last). Invalid input does not fail: it
+    /// falls back to **opaque black**. Use ``init(validatingHex:)`` when the
+    /// string comes from outside the app and a silent fallback is not wanted.
     init(hex: String) {
-        let cleaned = hex.trimmingCharacters(in: CharacterSet(charactersIn: "#"))
-        var value: UInt64 = 0
-        Scanner(string: cleaned).scanHexInt64(&value)
-        let r, g, b, a: Double
-        switch cleaned.count {
-        case 6:
-            r = Double((value & 0xFF0000) >> 16) / 255
-            g = Double((value & 0x00FF00) >> 8) / 255
-            b = Double(value & 0x0000FF) / 255
-            a = 1
-        case 8:
-            r = Double((value & 0xFF000000) >> 24) / 255
-            g = Double((value & 0x00FF0000) >> 16) / 255
-            b = Double((value & 0x0000FF00) >> 8) / 255
-            a = Double(value & 0x000000FF) / 255
-        default:
-            r = 0; g = 0; b = 0; a = 1
+        self = Color(validatingHex: hex) ?? Color(.sRGB, red: 0, green: 0, blue: 0, opacity: 1)
+    }
+
+    /// Parses a hex color string into sRGB components in `0...1`.
+    internal static func hexComponents(
+        _ hex: String
+    ) -> (red: Double, green: Double, blue: Double, alpha: Double)? {
+        var digits = Substring(hex)
+        if digits.hasPrefix("#") { digits.removeFirst() }
+
+        var nibbles: [UInt8] = []
+        nibbles.reserveCapacity(8)
+        for byte in digits.utf8 {
+            switch byte {
+            case UInt8(ascii: "0")...UInt8(ascii: "9"): nibbles.append(byte - UInt8(ascii: "0"))
+            case UInt8(ascii: "a")...UInt8(ascii: "f"): nibbles.append(byte - UInt8(ascii: "a") + 10)
+            case UInt8(ascii: "A")...UInt8(ascii: "F"): nibbles.append(byte - UInt8(ascii: "A") + 10)
+            default: return nil
+            }
         }
-        self.init(.sRGB, red: r, green: g, blue: b, opacity: a)
+
+        func channel(_ high: UInt8, _ low: UInt8) -> Double {
+            Double(high << 4 | low) / 255
+        }
+        let n = nibbles
+        switch n.count {
+        case 3: return (channel(n[0], n[0]), channel(n[1], n[1]), channel(n[2], n[2]), 1)
+        case 6: return (channel(n[0], n[1]), channel(n[2], n[3]), channel(n[4], n[5]), 1)
+        case 8: return (channel(n[0], n[1]), channel(n[2], n[3]), channel(n[4], n[5]), channel(n[6], n[7]))
+        default: return nil
+        }
     }
 }

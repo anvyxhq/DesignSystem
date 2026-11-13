@@ -60,7 +60,7 @@ public struct Card<Content: View>: View {
     public var body: some View {
         content()
             .padding(theme.spacing.md)
-            .background(theme.colors.surface)
+            .background(theme.colors.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: theme.radius.md, style: .continuous))
     }
 }

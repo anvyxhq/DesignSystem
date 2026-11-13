@@ -41,7 +41,7 @@ public struct AnvyxTextField: View {
             field
                 .textFieldStyle(.plain)
                 .padding(theme.spacing.sm)
-                .background(theme.colors.surface, in: RoundedRectangle(cornerRadius: theme.radius.sm, style: .continuous))
+                .background(theme.colors.fieldBackground, in: RoundedRectangle(cornerRadius: theme.radius.sm, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: theme.radius.sm, style: .continuous)
                         .stroke(error == nil ? Color.clear : theme.colors.danger, lineWidth: 1)
@@ -90,13 +90,13 @@ public struct AnvyxSegmentedControl<Option: Hashable>: View {
                 let isSelected = option == selection
                 Text(title(option))
                     .font(.subheadline.weight(.medium))
-                    .foregroundStyle(isSelected ? Color.white : theme.colors.textPrimary)
+                    .foregroundStyle(isSelected ? theme.colors.segmentedSelectedForeground : theme.colors.textPrimary)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, theme.spacing.sm)
                     .background {
                         if isSelected {
                             Capsule()
-                                .fill(theme.colors.accent)
+                                .fill(theme.colors.segmentedSelectedBackground)
                                 .matchedGeometryEffect(id: "seg", in: namespace)
                         }
                     }
@@ -108,7 +108,7 @@ public struct AnvyxSegmentedControl<Option: Hashable>: View {
             }
         }
         .padding(theme.spacing.xs)
-        .background(theme.colors.surface, in: Capsule())
+        .background(theme.colors.segmentedBackground, in: Capsule())
     }
 }
 
@@ -150,8 +150,8 @@ public struct AnvyxStepper: View {
             Image(systemName: symbol)
                 .font(.body.weight(.semibold))
                 .frame(width: 30, height: 30)
-                .background(theme.colors.surface, in: Circle())
-                .foregroundStyle(enabled ? theme.colors.accent : theme.colors.textSecondary)
+                .background(theme.colors.stepperBackground, in: Circle())
+                .foregroundStyle(enabled ? theme.colors.stepperForeground : theme.colors.textSecondary)
         }
         .buttonStyle(.plain)
         .disabled(!enabled)

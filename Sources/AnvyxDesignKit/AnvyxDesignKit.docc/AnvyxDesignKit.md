@@ -32,6 +32,37 @@ struct RootView: View {
 Brand colors that need explicit light/dark (or increased-contrast) variants use
 ``SwiftUI/Color/init(light:dark:highContrastLight:highContrastDark:)``.
 
+### Component colors
+
+Components do not read the semantic colors directly. Each reads a resolved
+component token on ``ColorPalette`` — ``ColorPalette/buttonBackground``,
+``ColorPalette/chipSelectedBackground``, ``ColorPalette/cardBackground``, … —
+which returns the matching ``ComponentColors`` override when one is set and the
+parent semantic token otherwise. Changing `accent` therefore still re-tints every
+component that was not overridden, and setting one component token changes only
+that component.
+
+```swift
+theme.colors.accent = .indigo                       // buttons, chips, info toasts, …
+theme.colors.components.buttonBackground = .black   // primary button only
+theme.colors.components.buttonBackground = nil      // inherit `accent` again
+```
+
+### Hex colors
+
+``SwiftUI/Color/init(validatingHex:)`` parses `RGB`, `RRGGBB` and `RRGGBBAA`
+(alpha last), with or without `#`, and returns `nil` for anything else.
+``SwiftUI/Color/init(hex:)`` accepts the same forms but falls back to opaque
+black, so prefer the validating initializer for values that come from outside
+the app.
+
+### Custom fonts
+
+``FontRegistrar/registerFonts(named:extension:in:)`` and
+``FontRegistrar/registerFonts(at:)`` register font files at runtime and return
+the PostScript names read from them, ready for ``FontFamily``. Fonts that are
+already registered are reported as available, not as failures.
+
 ### Motion
 
 Pick a ``ThemeMotion`` token by how often the user sees the motion: `quick` for
@@ -62,6 +93,9 @@ widths: `.environment(\.horizontalSizeClass, .regular)`.
 ### Theming
 - ``AnvyxTheme``
 - ``ColorPalette``
+- ``ComponentColors``
+- ``SwiftUI/Color/init(validatingHex:)``
+- ``SwiftUI/Color/init(hex:)``
 - ``Spacing``
 - ``Radius``
 - ``ThemeTypography``

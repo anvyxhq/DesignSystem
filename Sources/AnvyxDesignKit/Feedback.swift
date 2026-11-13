@@ -85,7 +85,7 @@ public struct SkeletonList: View {
         VStack(spacing: theme.spacing.sm) {
             ForEach(0..<rows, id: \.self) { _ in
                 RoundedRectangle(cornerRadius: theme.radius.md, style: .continuous)
-                    .fill(theme.colors.surface)
+                    .fill(theme.colors.skeletonBackground)
                     .frame(height: rowHeight)
                     .shimmering()
             }
@@ -120,7 +120,7 @@ public struct RatingView: View {
         HStack(spacing: theme.spacing.xs) {
             ForEach(1...max(1, count), id: \.self) { index in
                 Image(systemName: index <= rating ? "star.fill" : "star")
-                    .foregroundStyle(index <= rating ? theme.colors.warning : theme.colors.textSecondary)
+                    .foregroundStyle(index <= rating ? theme.colors.ratingFilled : theme.colors.textSecondary)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         guard isEditable else { return }

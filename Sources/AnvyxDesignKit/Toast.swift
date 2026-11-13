@@ -36,24 +36,15 @@ struct ToastBanner: View {
     let toast: Toast
     @Environment(\.anvyxTheme) private var theme
 
-    private var tint: Color {
-        switch toast.style {
-        case .info:    return theme.colors.accent
-        case .success: return theme.colors.success
-        case .warning: return theme.colors.warning
-        case .error:   return theme.colors.danger
-        }
-    }
-
     var body: some View {
         HStack(spacing: theme.spacing.sm) {
             Image(systemName: toast.icon)
             Text(toast.message).font(.subheadline.weight(.medium))
         }
-        .foregroundStyle(.white)
+        .foregroundStyle(theme.colors.toastForeground)
         .padding(.horizontal, theme.spacing.md)
         .padding(.vertical, theme.spacing.sm)
-        .background(tint, in: Capsule())
+        .background(theme.colors.toastBackground(for: toast.style), in: Capsule())
         .padding(.top, theme.spacing.sm)
         .themedTransition(.move(edge: .top).combined(with: .opacity))
     }

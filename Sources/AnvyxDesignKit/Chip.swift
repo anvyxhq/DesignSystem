@@ -26,8 +26,8 @@ public struct Chip: View {
                 .font(.subheadline.weight(.medium))
                 .padding(.horizontal, theme.spacing.md)
                 .padding(.vertical, theme.spacing.sm)
-                .foregroundStyle(isSelected ? Color.white : theme.colors.textPrimary)
-                .background(isSelected ? theme.colors.accent : theme.colors.surface, in: Capsule())
+                .foregroundStyle(isSelected ? theme.colors.chipSelectedForeground : theme.colors.chipForeground)
+                .background(isSelected ? theme.colors.chipSelectedBackground : theme.colors.chipBackground, in: Capsule())
         }
         .buttonStyle(.plain)
     }
@@ -40,7 +40,7 @@ private struct CardStyleModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding(theme.spacing.md)
-            .background(theme.colors.surface)
+            .background(theme.colors.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: theme.radius.md, style: .continuous))
     }
 }

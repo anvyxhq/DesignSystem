@@ -92,7 +92,8 @@ public struct Badge: View {
     var color: Color?
     @Environment(\.anvyxTheme) private var theme
 
-    /// `color` defaults to the theme accent when `nil`.
+    /// `color` defaults to the theme's badge background (the accent unless
+    /// overridden) when `nil`.
     public init(_ text: String, color: Color? = nil) {
         self.text = text
         self.color = color
@@ -101,9 +102,9 @@ public struct Badge: View {
     public var body: some View {
         Text(text)
             .font(.caption2.weight(.bold))
-            .foregroundStyle(.white)
+            .foregroundStyle(theme.colors.badgeForeground)
             .padding(.horizontal, theme.spacing.sm)
             .padding(.vertical, 2)
-            .background(color ?? theme.colors.accent, in: Capsule())
+            .background(color ?? theme.colors.badgeBackground, in: Capsule())
     }
 }

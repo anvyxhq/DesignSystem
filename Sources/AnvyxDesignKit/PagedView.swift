@@ -36,7 +36,7 @@ public struct PagedView<Data: RandomAccessCollection, Content: View>: View where
             HStack(spacing: theme.spacing.sm) {
                 ForEach(data) { element in
                     Circle()
-                        .fill(element.id == selection ? theme.colors.accent : theme.colors.textSecondary.opacity(0.3))
+                        .fill(element.id == selection ? theme.colors.pageIndicatorActive : theme.colors.textSecondary.opacity(0.3))
                         .frame(width: 8, height: 8)
                 }
             }
