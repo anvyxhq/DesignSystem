@@ -49,10 +49,16 @@ struct ComponentGallery: View {
                     Text("Card content").font(theme.typography.headline)
                 }
 
+                AdaptiveStack(spacing: theme.spacing.md) {
+                    Card { Text("Left / top").frame(maxWidth: .infinity) }
+                    Card { Text("Right / bottom").frame(maxWidth: .infinity) }
+                }
+
                 SkeletonList(rows: 2)
                 EmptyStateView.noResults()
             }
             .padding(theme.spacing.md)
+            .readableWidth()
         }
         .background(theme.colors.background)
     }
@@ -68,6 +74,12 @@ struct ComponentGallery: View {
     ComponentGallery()
         .anvyxTheme(AnvyxTheme())
         .preferredColorScheme(.dark)
+}
+
+#Preview("Gallery – Regular width") {
+    ComponentGallery()
+        .anvyxTheme(AnvyxTheme())
+        .environment(\.horizontalSizeClass, .regular)
 }
 
 #Preview("Gallery – XXL type") {

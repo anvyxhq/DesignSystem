@@ -19,6 +19,7 @@ public struct PrimaryButtonStyle: ButtonStyle {
     private struct Rendered: View {
         let configuration: Configuration
         @Environment(\.anvyxTheme) private var theme
+        @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
         var body: some View {
             configuration.label
@@ -29,8 +30,8 @@ public struct PrimaryButtonStyle: ButtonStyle {
                 .foregroundStyle(.white)
                 .clipShape(RoundedRectangle(cornerRadius: theme.radius.md, style: .continuous))
                 .opacity(configuration.isPressed ? 0.85 : 1)
-                .scaleEffect(configuration.isPressed ? 0.98 : 1)
-                .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
+                .scaleEffect(configuration.isPressed && !reduceMotion ? 0.98 : 1)
+                .themedAnimation(\.quick, value: configuration.isPressed)
         }
     }
 }
@@ -58,6 +59,7 @@ public struct SecondaryButtonStyle: ButtonStyle {
                         .stroke(theme.colors.accent, lineWidth: 1.5)
                 )
                 .opacity(configuration.isPressed ? 0.6 : 1)
+                .themedAnimation(\.quick, value: configuration.isPressed)
         }
     }
 }

@@ -56,7 +56,7 @@ struct ToastQueueModifier: ViewModifier {
                     .anvyxTimer(after: duration, id: toast.id) { queue.dismissCurrent() }
             }
         }
-        .animation(.spring(duration: 0.3), value: queue.current)
+        .themedAnimation(\.emphasized, value: queue.current)
     }
 }
 

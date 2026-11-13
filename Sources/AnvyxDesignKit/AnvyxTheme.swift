@@ -42,21 +42,33 @@ public struct ThemeTypography: Sendable {
     public var caption: Font    { font(.caption, weight: .regular, size: 12) }
 }
 
-/// Animation tokens for consistent motion across components. Use
-/// `resolved(_:reduceMotion:)` to honour the Reduce Motion accessibility setting.
+/// Animation tokens for consistent motion across components.
+///
+/// Pick a token by how often the user sees the motion:
+/// - `quick`: feedback the user triggers many times (press, toggle, selection).
+/// - `standard`: state changes inside a screen (overlay, expand, content swap).
+/// - `emphasized`: rare, attention-worthy moments (toast, first appearance).
+///
+/// Apply tokens with `themedAnimation(_:value:)` and `themedTransition(_:)` so
+/// Reduce Motion is honoured automatically: movement becomes a fade and every
+/// token is replaced by `reduced`.
 public struct ThemeMotion: Sendable {
     public var quick: Animation
     public var standard: Animation
     public var emphasized: Animation
+    /// The animation every token resolves to while Reduce Motion is on.
+    public var reduced: Animation
 
     public init(
         quick: Animation = .easeOut(duration: 0.15),
         standard: Animation = .easeInOut(duration: 0.25),
-        emphasized: Animation = .spring(response: 0.4, dampingFraction: 0.82)
+        emphasized: Animation = .spring(response: 0.4, dampingFraction: 0.82),
+        reduced: Animation = .easeInOut(duration: 0.2)
     ) {
         self.quick = quick
         self.standard = standard
         self.emphasized = emphasized
+        self.reduced = reduced
     }
 
     /// `animation` unless Reduce Motion is on, in which case animation is dropped.

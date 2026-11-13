@@ -72,6 +72,7 @@ public struct AnvyxSegmentedControl<Option: Hashable>: View {
     private let title: (Option) -> String
     @Namespace private var namespace
     @Environment(\.anvyxTheme) private var theme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     public init(
         _ options: [Option],
@@ -101,7 +102,8 @@ public struct AnvyxSegmentedControl<Option: Hashable>: View {
                     }
                     .contentShape(Capsule())
                     .onTapGesture {
-                        withAnimation(theme.motion.standard) { selection = option }
+                        // Reduce Motion: switch without sliding the capsule.
+                        withAnimation(reduceMotion ? nil : theme.motion.standard) { selection = option }
                     }
             }
         }

@@ -55,7 +55,7 @@ struct ToastBanner: View {
         .padding(.vertical, theme.spacing.sm)
         .background(tint, in: Capsule())
         .padding(.top, theme.spacing.sm)
-        .transition(.move(edge: .top).combined(with: .opacity))
+        .themedTransition(.move(edge: .top).combined(with: .opacity))
     }
 }
 
@@ -71,7 +71,7 @@ public struct ToastModifier: ViewModifier {
                     .anvyxTimer(after: duration, id: toast.id) { self.toast = nil }
             }
         }
-        .animation(.spring(duration: 0.3), value: toast)
+        .themedAnimation(\.emphasized, value: toast)
     }
 }
 

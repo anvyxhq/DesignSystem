@@ -18,9 +18,11 @@ import SwiftUI
 public struct Shimmer: ViewModifier {
     @State private var phase: CGFloat = -1
     var active: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     public func body(content: Content) -> some View {
-        guard active else { return AnyView(content) }
+        // Reduce Motion: keep the static placeholder, skip the moving gradient.
+        guard active, !reduceMotion else { return AnyView(content) }
         return AnyView(
             content
                 .overlay(gradient.mask(content))

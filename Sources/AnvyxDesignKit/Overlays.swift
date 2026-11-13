@@ -38,7 +38,7 @@ public struct LoadingOverlay: ViewModifier {
                 .transition(.opacity)
             }
         }
-        .animation(.easeInOut(duration: 0.2), value: isPresented)
+        .themedAnimation(\.standard, value: isPresented)
     }
 }
 

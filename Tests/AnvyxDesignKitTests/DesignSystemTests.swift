@@ -78,6 +78,20 @@ final class DesignSystemTests: XCTestCase {
         XCTAssertNotNil(motion.resolved(motion.standard, reduceMotion: false))
     }
 
+    func testReduceMotionSwapsTokensForReducedAnimation() {
+        let motion = ThemeMotion()
+        XCTAssertEqual(motion.animation(motion.emphasized, reduceMotion: true), motion.reduced)
+        XCTAssertEqual(motion.animation(motion.emphasized, reduceMotion: false), motion.emphasized)
+    }
+
+    // MARK: - Adaptive layout
+
+    func testLayoutWidthFollowsHorizontalSizeClass() {
+        XCTAssertEqual(LayoutWidth(.regular), .regular)
+        XCTAssertEqual(LayoutWidth(.compact), .compact)
+        XCTAssertEqual(LayoutWidth(nil), .compact)
+    }
+
     // MARK: - Components (phase 4)
 
     @MainActor

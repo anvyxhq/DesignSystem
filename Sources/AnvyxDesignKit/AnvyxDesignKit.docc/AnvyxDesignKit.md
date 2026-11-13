@@ -32,6 +32,31 @@ struct RootView: View {
 Brand colors that need explicit light/dark (or increased-contrast) variants use
 ``SwiftUI/Color/init(light:dark:highContrastLight:highContrastDark:)``.
 
+### Motion
+
+Pick a ``ThemeMotion`` token by how often the user sees the motion: `quick` for
+repeated feedback (press, toggle, selection), `standard` for state changes inside
+a screen, `emphasized` for rare moments such as a toast. Apply tokens with
+``SwiftUI/View/themedAnimation(_:value:)`` and
+``SwiftUI/View/themedTransition(_:)``. With Reduce Motion on, movement becomes a
+fade and every token runs as `reduced`. Do not call `.animation(.spring…)` with a
+literal value in components.
+
+```swift
+content
+    .themedTransition(.move(edge: .top).combined(with: .opacity))
+    .themedAnimation(\.emphasized, value: isPresented)
+```
+
+### Adaptive layout
+
+Branch layout on ``LayoutWidth`` (from the horizontal size class), not on
+measured screen size. Keep one screen per feature and switch only its layout
+with ``AdaptiveLayout`` or ``AdaptiveStack``; state stays shared. Use
+``SwiftUI/View/readableWidth(_:)`` so text and forms do not stretch across an
+iPad, and `NavigationSplitView` for list–detail. Preview every screen at both
+widths: `.environment(\.horizontalSizeClass, .regular)`.
+
 ## Topics
 
 ### Theming
@@ -44,6 +69,16 @@ Brand colors that need explicit light/dark (or increased-contrast) variants use
 - ``ThemeHaptics``
 - ``FontFamily``
 - ``FontRegistrar``
+
+### Motion
+- ``SwiftUI/View/themedAnimation(_:value:)``
+- ``SwiftUI/View/themedTransition(_:)``
+
+### Adaptive Layout
+- ``LayoutWidth``
+- ``AdaptiveLayout``
+- ``AdaptiveStack``
+- ``SwiftUI/View/readableWidth(_:)``
 
 ### Liquid Glass
 - ``AnvyxGlassContainer``
